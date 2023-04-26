@@ -1,7 +1,7 @@
-package com.ll.scheduled;
+package com.ll.demo.scheduled;
 
 
-import com.ll.task.AsyncTask;
+import com.ll.demo.task.AsyncTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +20,7 @@ public class FixedScheduler {
 
     private LinkedBlockingDeque<Future> queue = new LinkedBlockingDeque<>(1000 * 1000);
 
-    @Scheduled(fixedRate = 10)
+//    @Scheduled(fixedRate = 10)
     public void run() throws InterruptedException {
 
         System.out.println("定时任务执行中...");

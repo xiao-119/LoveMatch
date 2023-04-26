@@ -1,4 +1,4 @@
-package com.ll.config;
+package com.ll.demo.config;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;

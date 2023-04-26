@@ -1,6 +1,6 @@
-package com.ll.handler;
+package com.ll.demo.handler;
 
-import com.ll.common.Result;
+import com.ll.demo.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -20,10 +20,10 @@ public class GlobalExceptionHandler {
     // 捕获空指针异常
     @ExceptionHandler(NullPointerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result<String> nullPointerExceptionRun(HttpServletRequest request, Throwable e) {
+    public R<String> nullPointerExceptionRun(HttpServletRequest request, Throwable e) {
         String message = "发生了空指针异常！";
         e.printStackTrace();
-        return new Result<>(getStatus(request).value()+"", message);
+        return new R<>(getStatus(request).value()+"", message);
     }
 
     private HttpStatus getStatus(HttpServletRequest request) {
@@ -46,15 +46,15 @@ public class GlobalExceptionHandler {
     // 捕捉其他所有异常
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Result globalException(HttpServletRequest request, Throwable ex) {
+    public R globalException(HttpServletRequest request, Throwable ex) {
         ex.printStackTrace();
-        return new Result("'"+getStatus(request).value()+"'", ex.getMessage());
+        return new R("'"+getStatus(request).value()+"'", ex.getMessage());
     }
 
     // 参数校验异常
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Result handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public R handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         String strErrors = "";
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -66,6 +66,6 @@ public class GlobalExceptionHandler {
             strErrors += error + ",";
         }
 
-        return new Result("500", strErrors);
+        return new R("500", strErrors);
     }
 }

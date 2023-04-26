@@ -1,4 +1,4 @@
-package com.ll.exception;
+package com.ll.demo.exception;
 
 public class ParseException extends RuntimeException {
     private String errorCode;
