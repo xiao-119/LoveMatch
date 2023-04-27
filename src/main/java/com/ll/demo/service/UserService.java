@@ -14,4 +14,6 @@ public interface UserService {
     int updateUser(User user);
 
     int deleteUser(Long id);
+
+    List<User> getUsers();
 }

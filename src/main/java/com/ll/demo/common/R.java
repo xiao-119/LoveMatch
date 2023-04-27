@@ -15,7 +15,7 @@ public class R<T> implements Serializable {
         this.code = "0";
     }
 
-     private R(T data) {
+    private R(T data) {
         this.code = "0";
         this.message = "success";
         if (data != null) {
@@ -26,6 +26,10 @@ public class R<T> implements Serializable {
     public R(String code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public static R<String> error(String msg) {
+        return new R<>("-1", msg);
     }
 
     public static <T> R<T> success(T data) {

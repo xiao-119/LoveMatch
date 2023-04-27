@@ -18,3 +18,7 @@ mybatis-plus:
   typeAliasesPackage: com.example.demo.entity
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# pageHelper
+pagehelper:
+  helperDialect: mysql

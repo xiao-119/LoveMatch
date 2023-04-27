@@ -33,7 +33,7 @@ class TestControllerTest {
 
         // Verify the results
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        String expected = JSONUtil.toJsonStr(JSONUtil.parseObj(new R<>("Hello World"), false));
+        String expected = JSONUtil.toJsonStr(JSONUtil.parseObj(R.success("Hello World"), false));
         assertThat(response.getContentAsString()).isEqualTo(expected);
 
         System.out.println(expected);
