@@ -8,12 +8,16 @@ import com.ll.demo.dto.UserDto;
 import com.ll.demo.entity.User;
 import com.ll.demo.service.UserService;
 import com.ll.demo.util.PageUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@Tag(name = "user", description = "Tutorial management APIs")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -57,8 +61,12 @@ public class UserController {
      * @param page
      * @return
      */
+    @Operation(summary = "测试接口hello", description = "测试接口description", tags = {"测试接口tags", "测试接口tags2"})
+    @ApiResponses({
+//            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = R.class), mediaType = "application/json") })
+    })
     @PostMapping("/postUsers") //
-    public R<?> postUsers(@Valid @RequestBody PageDto page) {
+    public R<PageInfo<UserDto>> postUsers(@Valid @RequestBody PageDto page) {
 
         PageHelper.startPage(page.getPageNo(), page.getPageSize());
         List<User> allUsers = userService.getAllUsers();
