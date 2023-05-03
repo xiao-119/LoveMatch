@@ -5,10 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ll.demo.common.R;
 import com.ll.demo.dto.PageDto;
+import com.ll.demo.dto.UserDto;
 import com.ll.demo.entity.User;
 import com.ll.demo.service.UserService;
+import com.ll.demo.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -53,11 +54,12 @@ public class TestController {
     /**
      * json请求转为对象, 必须加 @RequestBody
      * Content-Type:application/json
-     *
+     * <p>
      * {
-     *     "pageNo": "1",
-     *     "pageSize": 2
+     * "pageNo": "1",
+     * "pageSize": 2
      * }
+     *
      * @param page
      * @return
      */
@@ -67,6 +69,9 @@ public class TestController {
         PageHelper.startPage(page.getPageNo(), page.getPageSize());
         List<User> allUsers = userService.getAllUsers();
         PageInfo<User> pageInfo = new PageInfo<>(allUsers);
-        return R.success(pageInfo);
+
+        PageInfo<UserDto> replace = PageUtils.replace(pageInfo, UserDto.class);
+
+        return R.success(replace);
     }
 }
