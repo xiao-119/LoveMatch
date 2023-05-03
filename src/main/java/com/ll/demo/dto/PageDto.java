@@ -1,5 +1,6 @@
 package com.ll.demo.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
+@AllArgsConstructor
 public class PageDto {
     @Min(value = 1, message = "页码最小为1")
     Integer pageNo;
