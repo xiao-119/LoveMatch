@@ -17,7 +17,7 @@ public class PageDto {
 
     // @Size(min = 1, max = 10, message = "页码最小为1")
     @Min(value = 1, message = "页大小最小为1")
-    @Schema(description = "单页大小")
+    @Schema(description = "单页大小",defaultValue = "2")
     Integer pageSize;
 
 
