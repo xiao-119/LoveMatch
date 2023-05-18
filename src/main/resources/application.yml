@@ -1,5 +1,7 @@
 server:
   port: 8082
+#  优雅停机，spring注册了shutdown-hook，例如 controller请求，会等待请求结束后再停机。
+  shutdown: graceful
 
 spring:
   datasource:
@@ -10,6 +12,9 @@ spring:
   sql:
     init:
       mode: always
+  main:
+#    spring自带的shutdown-hook 例如bean销毁
+    register-shutdown-hook: true
 
 mybatis-plus:
   # mapper.xml文件所在路径，多个路径用逗号隔开
