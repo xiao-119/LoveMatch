@@ -3,12 +3,14 @@ package com.ll.demo;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 @MapperScan("com.ll.demo.mapper")
+@EnableFeignClients(basePackages = "com.ll.demo.service.client")
 public class OpenApiApplication {
 
 	public static void main(String[] args) {
