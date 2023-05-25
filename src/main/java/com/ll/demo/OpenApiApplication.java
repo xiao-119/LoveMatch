@@ -14,9 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class OpenApiApplication {
 
 	public static void main(String[] args) {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			System.out.println("JVM退出");
-		}));
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("JVM退出")));
 
 		SpringApplication.run(OpenApiApplication.class, args);
 	}
