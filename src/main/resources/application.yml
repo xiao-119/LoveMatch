@@ -15,7 +15,10 @@ spring:
   main:
     # spring自带的shutdown-hook 例如bean销毁
     register-shutdown-hook: true
-
+  servlet:
+    multipart: # 文件上传配置
+      max-file-size: 4GB # 单个文件最大大小
+      max-request-size: 4GB # 一次请求最大大小
   task:
     scheduling:
       shutdown:
