@@ -2,6 +2,7 @@ package com.ll.demo.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ll.demo.annotation.WebLog;
 import com.ll.demo.common.R;
 import com.ll.demo.dto.PageDto;
 import com.ll.demo.dto.UserDto;
@@ -66,6 +67,7 @@ public class UserController {
 //            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = R.class), mediaType = "application/json") })
     })
     @PostMapping("/postUsers") //
+    @WebLog
     public R<PageInfo<UserDto>> postUsers(@Valid @RequestBody PageDto page) {
 
         PageHelper.startPage(page.getPageNo(), page.getPageSize());
