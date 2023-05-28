@@ -93,6 +93,13 @@
             <artifactId>reactive-streams</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+
+
     </dependencies>
     <build>
         <plugins>
