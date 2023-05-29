@@ -21,7 +21,7 @@ public class FileSystemStorageService implements StorageService {
 
 	private final Path rootLocation;
 
-	@Autowired
+	@Autowired // 当创建该类的实例时，Spring 将自动查找匹配类型的 Bean，并将其作为构造函数的参数传递进去。
 	public FileSystemStorageService(StorageProperties properties) {
 		this.rootLocation = Paths.get(properties.getLocation());
 	}
