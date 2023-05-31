@@ -1,6 +1,7 @@
 package com.ll.demo.controller;
 
 
+import com.ll.demo.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,9 +28,19 @@ public class FileController {
         Path resolve = Paths.get(path).resolve(fileName);
         File file = resolve.toFile();
         response.reset();
-        response.setContentType("application/octet-stream");
         response.setCharacterEncoding("utf-8");
         response.setContentLength((int) file.length());
+        UserDto userDto = new UserDto();
+        userDto.setAge(18);
+        userDto.setName("ll");
+        response.setHeader("result", "success");
+        System.out.println(userDto.toString());
+        response.setHeader("user", userDto.toString());
+
+        if (fileName.equals("1")){
+            return "failed";
+        }
+        response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));) {
