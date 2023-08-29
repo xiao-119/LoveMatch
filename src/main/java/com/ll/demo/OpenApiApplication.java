@@ -1,11 +1,16 @@
 package com.ll.demo;
 
+import com.ll.demo.entity.User;
+import com.ll.demo.mapper.UserMapper;
 import com.ll.demo.storage.StorageProperties;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -23,4 +28,17 @@ public class OpenApiApplication {
 		SpringApplication.run(OpenApiApplication.class, args);
 	}
 
+
+	@Autowired
+	private UserMapper userMapper;
+
+
+//	@Bean
+	public CommandLineRunner myCommandLineRunner(){
+		return args -> {
+			System.out.println("CommandLineRunner run");
+			User user = userMapper.selectById(1);
+			System.out.println(user);
+		};
+	}
 }

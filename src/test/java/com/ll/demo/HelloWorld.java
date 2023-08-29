@@ -20,4 +20,21 @@ public class HelloWorld {
         String gbk = new String(bytes, "iso-8859-1");
         LOGGER.info("hello world");
     }
+
+
+    @Test
+    public void testSplit(){
+        String sql = "select * from user where id = 1 limit 1, 10";
+
+        String[] limits = sql.split("limit1");
+        if (limits.length > 1) {
+            String[] split = limits[1].split(",");
+            String offset = split[0];
+            String limit = split[1];
+            System.out.println(offset);
+            System.out.println(limit);
+        }
+
+
+    }
 }

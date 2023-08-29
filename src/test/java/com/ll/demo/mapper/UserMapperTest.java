@@ -22,7 +22,7 @@ public class UserMapperTest {
     private UserMapper userMapper;
 
     private static String randString() {
-        Random random = new Random(1);
+        Random random = new Random();
         int length = random.nextInt(6) + 5;
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder(length);
@@ -44,6 +44,27 @@ public class UserMapperTest {
             userMapper.insert(user);
         }
     }
+
+    @Test
+    public void insertOne(){
+        User user = new User();
+        user.setName(randString());
+        user.setAge(new Random().nextInt(100));
+        user.setEmail(randString() + "@qq.com");
+        userMapper.insert(user);
+    }
+
+
+
+    @Test
+    public void testRandom(){
+        Random random = new Random();
+        System.out.println(random.nextInt(100));
+        System.out.println(randString());
+        System.out.println(randString());
+        System.out.println(randString());
+    }
+
 
     @Test
     public void filterDuplicate() {
@@ -98,4 +119,19 @@ public class UserMapperTest {
         PageInfo<User> pageInfo = new PageInfo<>(users);
         pageInfo.getList().forEach(System.out::println);
     }
+
+
+    @Test
+    public void selectAll2() {
+        List<User> users = userMapper.selectList(null);
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void selectOne(){
+
+        User user = userMapper.selectById(1696495526011191297L);
+        System.out.println(user);
+    }
+
 }
