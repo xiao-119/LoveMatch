@@ -1,7 +1,6 @@
 package com.ll.demo;
 
-import com.ll.demo.entity.User;
-import com.ll.demo.mapper.UserMapper;
+import com.ll.demo.handler.test.filterChain.ChainPatternDemo;
 import com.ll.demo.storage.StorageProperties;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +29,14 @@ public class OpenApiApplication {
 
 
 	@Autowired
-	private UserMapper userMapper;
+	private ChainPatternDemo chainPatternDemo;
 
 
-//	@Bean
+	@Bean
 	public CommandLineRunner myCommandLineRunner(){
 		return args -> {
 			System.out.println("CommandLineRunner run");
-			User user = userMapper.selectById(1);
-			System.out.println(user);
+			chainPatternDemo.exec("request", "response");
 		};
 	}
 }
