@@ -4,6 +4,7 @@ package com.ll.demo.controller;
 import com.ll.demo.common.R;
 import com.ll.demo.entity.User;
 import com.ll.demo.service.client.HelloServiceClient;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Tag(name = "测试接口",description = "测试接口description")
 @RestController
 @RequestMapping("/test")
+@Hidden
 public class TestController {
 
 

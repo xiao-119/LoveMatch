@@ -19,7 +19,7 @@ public class MybatisConfig {
     @Bean
     public Interceptor[] mybatisPlusInterceptors() {
         return new Interceptor[]{
-                new FilterInterceptor(),
+//                new FilterInterceptor(),
                 new PageInterceptor(),
         };
     }

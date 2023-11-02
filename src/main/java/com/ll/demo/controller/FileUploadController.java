@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -66,4 +67,10 @@ public class FileUploadController {
 		return ResponseEntity.notFound().build();
 	}
 
+
+	@GetMapping("/home")
+	public String home(Model model) {
+
+		return "hi";
+	}
 }
