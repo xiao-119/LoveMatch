@@ -2,6 +2,8 @@ package com.ll.demo.controller;
 
 import cn.hutool.Hutool;
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ll.demo.annotation.WebLog;
@@ -18,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,9 +35,18 @@ public class UserController {
     UserService userService;
 
     @Operation(summary = "查看指定id用户", description = "", tags = {"aaa接口看这里"})
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public R<?> user(@PathVariable Long id) {
         User user = userService.getUserById(id);
+        return R.success(user);
+    }
+
+    @Operation(summary = "查看指定wxId用户", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/wxId/{wxId}")
+    public R<?> userByWxId(@PathVariable String wxId) {
+
+
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getWxId, wxId));
         return R.success(user);
     }
 
@@ -50,8 +62,28 @@ public class UserController {
     @Operation(summary = "注册修改user", description = "", tags = {"aaa接口看这里"})
     @PostMapping("/edit")
     public R<?> registerEdit(@Valid @RequestBody User user) {
-        boolean i = userService.saveOrUpdate(user);
+        user.setId(null);
+        boolean i = userService.saveOrUpdate(user, Wrappers.<User>lambdaUpdate().eq(User::getWxId, user.getWxId()));
         return R.success(i);
+    }
+
+    @Operation(summary = "根据wxId登录", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/login")
+    public String login(String wxId, HttpSession session) {
+        // 假设这里是你的登录逻辑，验证了wxId之后
+        session.setAttribute("wxId", wxId); // 将用户信息存入session
+        return "success";
+    }
+
+    @Operation(summary = "获取当前登录用户", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/current-user")
+    public String currentUser(HttpSession session) {
+        String wxId = (String) session.getAttribute("wxId");
+        if (wxId != null) {
+            return "current-user.wx_id: " + wxId;
+        } else {
+            return "not login";
+        }
     }
 
     @GetMapping("/allUser22")

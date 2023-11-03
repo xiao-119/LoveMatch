@@ -1,2 +1,4 @@
 /.idea/
 target/
+/doc/code.txt
+/src/main/resources/static/
