@@ -1,0 +1,34 @@
+version : '1'
+
+services:
+
+#  server:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#    # command: uvicorn main:app --reload --host 0.0.0.0 --port 5000
+#    command: python main.py
+
+
+  #  volumes:
+  #    - .:/vol/development
+     
+  #  depends_on:
+  #    - mysql
+  # redis:
+  #   image: redis:latest
+  #   container_name: redis-dreamer-cms
+  #   ports:
+  #     - "6379:6379"
+  mysql:
+    build: ./doc/sql
+    container_name: mysql-db-lm
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+#    restart: always
