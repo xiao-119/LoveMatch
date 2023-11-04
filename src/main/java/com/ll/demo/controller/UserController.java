@@ -67,8 +67,9 @@ public class UserController {
         return R.success(i);
     }
 
-    @Operation(summary = "根据wxId登录", description = "", tags = {"aaa接口看这里"})
+
     @GetMapping("/login")
+    @Hidden
     public String login(String wxId, HttpSession session) {
         // 假设这里是你的登录逻辑，验证了wxId之后
         session.setAttribute("wxId", wxId); // 将用户信息存入session
@@ -77,6 +78,7 @@ public class UserController {
 
     @Operation(summary = "获取当前登录用户", description = "", tags = {"aaa接口看这里"})
     @GetMapping("/current-user")
+    @Hidden
     public String currentUser(HttpSession session) {
         String wxId = (String) session.getAttribute("wxId");
         if (wxId != null) {
