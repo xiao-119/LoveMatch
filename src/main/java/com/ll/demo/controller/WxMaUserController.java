@@ -107,7 +107,7 @@ public class WxMaUserController {
         return JsonUtils.toJson(phoneNoInfo);
     }
 
-
+    @Operation(summary = "获取手机号信息", description = "", tags = {"aaa接口看这里"})
     @GetMapping("/newPhone")
     public String phone(@PathVariable String appid, String code) throws WxErrorException {
         // 解密
