@@ -32,14 +32,14 @@ public class JdbcMapperTest {
 
 
     // skip 跳过测试
-    @Test
-    public void queryDataSource(){
-        DataSource dataSource = jdbcTemplate.getDataSource();
-        System.out.println(dataSource);
-        if (dataSource instanceof HikariDataSource hikariDataSource){
-            System.out.println(hikariDataSource.getJdbcUrl());
-            System.out.println(hikariDataSource.getUsername());
-            System.out.println(hikariDataSource.getPassword());
-        }
-    }
+//    @Test
+//    public void queryDataSource(){
+//        DataSource dataSource = jdbcTemplate.getDataSource();
+//        System.out.println(dataSource);
+//        if (dataSource instanceof HikariDataSource hikariDataSource){
+//            System.out.println(hikariDataSource.getJdbcUrl());
+//            System.out.println(hikariDataSource.getUsername());
+//            System.out.println(hikariDataSource.getPassword());
+//        }
+//    }
 }

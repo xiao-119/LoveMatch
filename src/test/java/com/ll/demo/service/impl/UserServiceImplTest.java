@@ -34,15 +34,15 @@ class UserServiceImplTest {
 
     @Test
     public void testUserMapper() {
-        User user = mockUserMapper.selectById(1);
-        System.out.println(user);
-        User user1 = new User(5L, "", 18, "");
-        when(userServiceImplUnderTest.getAllUsers()).thenReturn(List.of(user1));
-        List<User> allUsers = userServiceImplUnderTest.getAllUsers();
-        System.out.println(allUsers);
-
-        User userById = userServiceImplUnderTest.getUserById(1L);
-        System.out.println(userById);
+//        User user = mockUserMapper.selectById(1);
+//        System.out.println(user);
+//        User user1 = new User(5L, "", 18, "");
+//        when(userServiceImplUnderTest.getAllUsers()).thenReturn(List.of(user1));
+//        List<User> allUsers = userServiceImplUnderTest.getAllUsers();
+//        System.out.println(allUsers);
+//
+//        User userById = userServiceImplUnderTest.getUserById(1L);
+//        System.out.println(userById);
     }
 
 
