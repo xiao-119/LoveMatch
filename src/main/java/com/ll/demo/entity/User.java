@@ -7,6 +7,7 @@ import com.ll.demo.annotation.UpdateTime;
 import com.ll.demo.validation.WxIdValid;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("user")
+@Builder
 public class User {
     @TableId(type = IdType.AUTO)
     @Schema(description = "用户ID")
@@ -54,9 +56,10 @@ public class User {
     private String address;
     @Schema(description = "是否删除 0未删除 1已删除",example = "0")
     private Integer isDel;
-//    @Schema(description = "手机号",example = "119")
-//    private String phoneNumber;
-//    private String avatar;
+    @Schema(description = "手机号",example = "119")
+    private String phoneNumber;
+    @Schema(description = "图片 id",example = "0")
+    private String avatar;
 
     @Schema(description = "邮箱",example = "110@gmail.com")
     private String email;

@@ -1,13 +1,13 @@
 server:
-  port: 8082
+  port: 80
 #  优雅停机，spring注册了shutdown-hook，例如 controller请求，会等待请求结束后再停机。
   shutdown: graceful
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://sh-cynosdbmysql-grp-fchhn1tg.sql.tencentcdb.com:25795/testdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     username: root
-    password: root
+    password: QAZqaz123
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:

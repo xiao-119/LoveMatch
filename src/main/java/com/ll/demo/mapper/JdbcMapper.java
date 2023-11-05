@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -19,7 +21,7 @@ public class JdbcMapper {
 
     public List<?> selectAll(String tableName) {
         if (ObjectUtil.isEmpty(tableName)) {
-            return List.of();
+            return Collections.emptyList();
         }
         String sql = "SELECT * FROM " + tableName;
         List<User> query = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));

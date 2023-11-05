@@ -1,12 +1,14 @@
 package com.ll.demo.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ll.demo.common.R;
 import com.ll.demo.entity.Match;
 import com.ll.demo.entity.User;
 import com.ll.demo.service.UserService;
 import com.ll.demo.service.impl.MatchServiceImpl;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +46,7 @@ public class MatchController {
 
     @Operation(summary = "获取所有已经配对用户", description = "", tags = {"aaa接口看这里"})
     @GetMapping("/allMatched")
+    @Hidden
     public R<?> allMatched() {
         List<User> users = userService.list(Wrappers.<User>lambdaQuery().eq(User::getIsDel, 0));
         List<Match> matches = matchService.list(Wrappers.<Match>lambdaQuery().eq(Match::getIsDel, 0));
@@ -59,18 +62,9 @@ public class MatchController {
         return R.success(matchedUsers);
     }
 
-
-    @Operation(summary = "查询某个wxId配对用户信息", description = "", tags = {"aaa接口看这里"})
-    @GetMapping("/findOne/{wxId}")
-    public R<?> findOne(@PathVariable String wxId) {
-        Match one = matchService.getOne(Wrappers.<Match>lambdaQuery().eq(Match::getIsDel, 0)
-                .and(c -> c.eq(Match::getWxId1, wxId).or().eq(Match::getWxId2, wxId)));
-        return R.success(one);
-    }
-
-
     @Operation(summary = "所有未配对用户男女随机匹配,返回剩下的人", description = "", tags = {"aaa接口看这里"})
     @GetMapping("/randomMatch")
+    @Hidden
     public R<?> randomMatch() {
         List<User> users = allUnMatch().getData();
 
@@ -93,29 +87,78 @@ public class MatchController {
     }
 
 
-    @Operation(summary = "清除所有配对关系", description = "", tags = {"aaa接口看这里"})
-    @GetMapping("/clear")
-    public R<?> clear() {
-        boolean update = matchService.update(Wrappers.<Match>lambdaUpdate().set(Match::getIsDel, 1));
-        return R.success(update);
-    }
+    @Operation(summary = "wxId1 向 wxId2 发起申请好友 isDel状态 5", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/update/send/{wxId1}/receive/{wxId2}/ready")
+    public R<?> updateReady(@PathVariable String wxId1, @PathVariable String wxId2) {
+        Match build = Match.builder()
+                .wxId1(wxId1)
+                .wxId2(wxId2)
+                .isDel(5L)
+                .build();
 
-    @Operation(summary = "给指定两人wxId添加配对", description = "", tags = {"aaa接口看这里"})
-    @GetMapping("/add/{wxId1}/{wxId2}")
-    public R<?> userByWxId(@PathVariable String wxId1, @PathVariable String wxId2) {
-        Match build = Match.builder().wxId1(wxId1).wxId2(wxId2).build();
-
-        boolean save = matchService.save(build);
+        boolean save = matchService.saveOrUpdate(build,Wrappers.<Match>lambdaUpdate()
+                .eq(Match::getWxId1, wxId1)
+                .eq(Match::getWxId2, wxId2));
         return R.success(save);
     }
 
 
-    @Operation(summary = "删除某个wxId的配对", description = "", tags = {"aaa接口看这里"})
-    @GetMapping("/del/{wxId}")
-    public R<?> userByWxId(@PathVariable String wxId) {
+    @Operation(summary = "wxId1 向 wxId2 发起申请好友,后者同意。 isDel状态 0", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/update/send/{wxId1}/receive/{wxId2}/ok")
+    public R<?> updateOk(@PathVariable String wxId1, @PathVariable String wxId2) {
 
-        boolean update = matchService.update(Wrappers.<Match>lambdaUpdate().set(Match::getIsDel, 1)
-                .and(i -> i.eq(Match::getWxId1, wxId).or().eq(Match::getWxId2, wxId)));
-        return R.success(update);
+
+        Match one = matchService.getOne(Wrappers.<Match>lambdaQuery()
+                .eq(Match::getWxId1, wxId1)
+                .eq(Match::getWxId2, wxId2)
+                .eq(Match::getIsDel, 5L));
+
+        if (ObjectUtil.isEmpty(one)){
+            return R.error("没有申请记录");
+        }
+        one.setIsDel(0L);
+        boolean save = matchService.saveOrUpdate(one);
+        return R.success(save);
+    }
+
+
+    @Operation(summary = "wxId所有发送的申请记录", description = "isDel状态 0 同意交往，5待同意", tags = {"aaa接口看这里"})
+    @GetMapping("/query/send/{wxId}")
+    public R<?> querySend(@PathVariable String wxId) {
+
+        List<Match> sends = matchService.list(Wrappers.<Match>lambdaQuery().eq(Match::getWxId1, wxId));
+        return R.success(sends);
+    }
+
+    @Operation(summary = "wxId所有接受的的申请记录", description = "isDel状态 0 同意交往，5待同意", tags = {"aaa接口看这里"})
+    @GetMapping("/query/receive/{wxId}")
+    public R<?> queryReceive(@PathVariable String wxId) {
+
+        List<Match> receives= matchService.list(Wrappers.<Match>lambdaQuery().eq(Match::getWxId2, wxId));
+        return R.success(receives);
+    }
+    @Operation(summary = "查询所有这个用户已经匹配到的关联用户", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/query/match/{wxId}")
+    public R<?> findOne(@PathVariable String wxId) {
+        Match one = matchService.getOne(Wrappers.<Match>lambdaQuery()
+                .eq(Match::getIsDel, 0)
+                .and(c -> c.eq(Match::getWxId1, wxId).or().eq(Match::getWxId2, wxId)));
+        return R.success(one);
+    }
+
+    @Operation(summary = "删除某个wxId的配对", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/del/send/{wxId1}/receive/{wxId2}/")
+    public R<?> del(@PathVariable String wxId1, @PathVariable String wxId2) {
+
+        boolean remove = matchService.remove(Wrappers.<Match>lambdaQuery()
+                .eq(Match::getWxId1, wxId1)
+                .eq(Match::getWxId2, wxId2));
+        return R.success(remove);
+    }
+    @Operation(summary = "清除所有配对关系", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/clear")
+    public R<?> clear() {
+        boolean remove = matchService.remove(Wrappers.lambdaUpdate());
+        return R.success(remove);
     }
 }

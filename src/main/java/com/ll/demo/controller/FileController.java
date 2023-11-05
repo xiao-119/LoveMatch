@@ -1,11 +1,22 @@
 package com.ll.demo.controller;
 
 
+import com.ll.demo.common.R;
 import com.ll.demo.dto.UserDto;
+import com.ll.demo.entity.DBFile;
+import com.ll.demo.service.DBFileStorageService;
+import com.ll.demo.storage.StorageFileNotFoundException;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -16,9 +27,8 @@ import java.nio.file.Paths;
 @RequestMapping("/file")
 @Slf4j
 public class FileController {
-
-
     @RequestMapping("/download")
+    @Hidden
     public String downloadFile(HttpServletResponse response, @RequestParam("fileName") String fileName) {
         return downloadFile(fileName, response);
     }
@@ -58,4 +68,39 @@ public class FileController {
         }
         return "ok";
     }
+
+    @Autowired
+    private DBFileStorageService dbFileStorageService;
+    @Operation(summary = "上传图片", description = "", tags = {"aaa接口看这里"})
+    @PostMapping("/upload")
+    public R<?> upload(@RequestParam("file") MultipartFile file) throws IOException {
+
+        String fileName = file.getOriginalFilename();
+
+        DBFile dbFile = new DBFile();
+        dbFile.setFileName(fileName);
+        dbFile.setFileType(file.getContentType());
+        dbFile.setData(file.getBytes());
+        dbFileStorageService.save(dbFile);
+
+        return R.success(dbFile.getId());
+    }
+
+    @Operation(summary = "下载图片", description = "", tags = {"aaa接口看这里"})
+    @GetMapping("/download/{file_id}")
+    public ResponseEntity<Resource> download(@PathVariable Long file_id) {
+
+        DBFile dbFile  = dbFileStorageService.getById(file_id);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(dbFile.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
+                .body(new ByteArrayResource(dbFile.getData()));
+    }
+
+
+//    @ExceptionHandler(StorageFileNotFoundException.class)
+//    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+//        return ResponseEntity.notFound().build();
+//    }
+
 }
